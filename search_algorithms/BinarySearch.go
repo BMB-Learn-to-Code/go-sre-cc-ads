@@ -13,6 +13,10 @@ func (b *BinarySearch) LookUp(target int) bool {
 	return found
 }
 
+func (b *BinarySearch) FindBoundary(condition func(n int) bool) int {
+	return b.searchLast(condition)
+}
+
 func (b *BinarySearch) search(target int) (int, bool) {
 	low := 0
 	high := len(b.data) - 1
@@ -32,4 +36,22 @@ func (b *BinarySearch) search(target int) (int, bool) {
 	}
 
 	return -1, false
+}
+
+func (b *BinarySearch) searchLast(f func(n int) bool) int {
+	low := 0
+	high := len(b.data) - 1
+	lastfound := -1
+
+	for low <= high {
+		mid := (high-low)/2 + low
+		if f(b.data[mid]) {
+			lastfound = mid
+			low = mid + 1
+		}
+		high = mid - 1
+	}
+
+	return lastfound
+
 }
